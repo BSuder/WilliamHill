@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://www.google.pl/" />
+<title>LoginWilliamHill</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoginWilliamHill</td></tr>
+</thead><tbody>
+<!--Variables for login and amount of bet-->
+<tr>
+	<td>storeValue</td>
+	<td>0.05</td>
+	<td>BetAmount</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>WHATA_FOG3</td>
+	<td>Login</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>F0gUaTtest</td>
+	<td>Password</td>
+</tr>
+<!--Openning main site od williamhill-->
+<tr>
+	<td>open</td>
+	<td>http://sports.williamhill.com/betting/en-gb</td>
+	<td></td>
+</tr>
+<!--LoginProcess-->
+<tr>
+	<td>click</td>
+	<td>id=accountTabButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=loginUsernameInput</td>
+	<td>${Login}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=loginPasswordInput</td>
+	<td>${Password}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=loginButton</td>
+	<td></td>
+</tr>
+<!--Wait for page load after log in-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=accountTabButton</td>
+	<td></td>
+</tr>
+<!--If avialable amount is lower than wanted to bet amount test should stop-->
+<tr>
+	<td>storeText</td>
+	<td>css=span.account-tab__text.-account</td>
+	<td>AvialAmount</td>
+</tr>
+<!--I was not able to handle converssion from text '£12.80' to double '12.8' in Selenium IDE,-->
+<!--It is possible in Java, first currency code must be cut, eg. String Tmp = AvialAmount.substring(2); -->
+<!--Next converssion from string to double double Avialable = Double.parsedouble(Tmp);-->
+<!---->
+<!--Navigate to Football and Premier Leauge-->
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#nav-football &gt; a.c-list__item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Competitions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Competitions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=OB_OU1711520095</td>
+	<td></td>
+</tr>
+<!--Click to make bet for first match in Premier Leauge on Home win-->
+<tr>
+	<td>click</td>
+	<td>id=OB_OU1711520095</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=stake-input__1711520095L</td>
+	<td></td>
+</tr>
+<!--Enter value to make bet-->
+<tr>
+	<td>type</td>
+	<td>id=stake-input__1711520095L</td>
+	<td>${BetAmount}</td>
+</tr>
+<!--Verify amount to win based on: BetAmount * win exchange rate (from web - data-odds)-->
+<tr>
+	<td>storeAttribute</td>
+	<td>id=OB_OU1711520095 </td>
+	<td>Rate</td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>id=total-to-return-price</td>
+	<td>${BetAmount * Rate}</td>
+</tr>
+<!--Place bet-->
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//input[@value='Place Bet'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=em.betslip-receipt__header-text</td>
+	<td>Bets placed</td>
+</tr>
+<!--Refresh of whole page, avialable amount need to be refreshed-->
+<tr>
+	<td>clickAndWait</td>
+	<td>css=span.icon-refresh</td>
+	<td></td>
+</tr>
+<!--Verify if avialable amoun has been decreased after bet-->
+<!--The same issue as in beginnig of test, I was not able to convert text '£12.80' to double '£2.80' in Selenium IDE,-->
+<!-- it is possible in Java, in the same way as mentioned before-->
+<tr>
+	<td>assertValue</td>
+	<td>css=span.account-tab__text.-account</td>
+	<td>${AvialAmount - BetAmount}</td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
